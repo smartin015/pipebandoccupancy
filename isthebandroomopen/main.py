@@ -27,6 +27,10 @@ DISCONNECT_THRESH = 5*60 # seconds
 jinja_environment = jinja2.Environment (
   loader=jinja2.FileSystemLoader ((os.path.dirname (__file__), 'templates')), extensions=[])
 
+class HelpHandler(webapp2.RequestHandler):
+    def get(self):
+        template = jinja_environment.get_template("disconnected.html")
+        self.response.out.write(template.render())
 
 class MainHandler(webapp2.RequestHandler):
     def get(self):
@@ -62,5 +66,6 @@ class UpdateHandler(webapp2.RequestHandler):
 		
 app = webapp2.WSGIApplication([
     ('/', MainHandler),
+    ('/help', HelpHandler),
 	('/update', UpdateHandler),
 ], debug=True)
